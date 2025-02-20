@@ -1,0 +1,16 @@
+{% extends "base.html"%}
+
+{% block title%} Team{% endblock %}
+
+{% block content %}
+{% for member in team_members %}
+<div class="team-member">
+    <img src="{{ url_for('static', filename=member.image) }}" alt="{{ member.name }}">
+    <h2>{{ member.name }}</h2>
+    <p>{{ member.position }}</p>
+    <p>{{ member.email }}</p>
+</div>
+{% endfor %}
+{% endblock%}
+
+

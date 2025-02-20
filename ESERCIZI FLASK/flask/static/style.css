@@ -1,0 +1,25 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    color: blue;
+}
+
+a {
+    color: red;
+    text-decoration: none;
+}
+
+.team-members img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.team-members {
+    margin: 20px 0;
+    text-align: center;
+}

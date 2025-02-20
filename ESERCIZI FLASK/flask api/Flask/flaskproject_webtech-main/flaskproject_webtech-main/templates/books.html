@@ -1,0 +1,59 @@
+{% extends "base.html"%}
+
+{% block title%} Books {% endblock %}
+
+{% block content %}
+<script>
+    async function submitForm(event){
+        event.preventDefault();
+        //prendo var di name scritti su i vari input
+        const Title=document.getElementById('Title').value;
+        const Author=document.getElementById('Author').value;
+        //creo la post
+        const response =await fetch('/api/books',{
+            method:'POST',
+            headers:{
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({Title,Author})
+        });
+
+        const result=await response.json();
+        if (response.ok) {
+            alert('book added ok')
+        }else{
+            alert('book not added')
+        }
+    }
+</script>
+<form id="bookForm" onsubmit="submitForm(event)">
+    TITOLO<input class="name" id="Title">
+    AUTHOR<input class="author" id="Author">
+    <button type="submit">Add Book</button>
+</form>
+
+<table class="table table-stripped">
+    <thead>
+        <tr>
+            <th>TITOLO</th>
+            <th>AUTORE</th>
+            <th>GENERE</th>
+            <th>ALTEZZA</th>
+            <th>EDITORE</th>
+            <th>AZIONI</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for book in books %}
+        <tr>
+            <td>{{ book.Title }}</td>
+            <td>{{ book.Author }}</td>
+            <td>{{ book.Genre }}</td>
+            <td>{{ book.Height }}</td>
+            <td>{{ book.Publisher }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock%}

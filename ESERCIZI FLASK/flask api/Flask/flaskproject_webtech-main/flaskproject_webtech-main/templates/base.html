@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-links">
+        <a href="/"{% if request.path == '/' %} class="active"{% endif %}>Home</a>
+        <a href="/books"{% if request.path == '/contact' %} class="active"{% endif %}>Books</a>
+        <a href="/team" {% if request.path == '/team' %} class="active"{% endif %}>richieste</a>
+        <a href="/about" {% if request.path == '/about' %} class="active"{% endif %}>About</a>
+    </div>
+</nav>
+<div class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<footer>
+    <p>&copy; 2024 Your Company. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
