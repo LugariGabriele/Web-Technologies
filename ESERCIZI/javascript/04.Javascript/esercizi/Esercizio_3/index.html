@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolo Statistiche Voti</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input {
+            margin: 5px 0;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Calcolo Statistiche sui Voti</h1>
+
+<!-- Input to insert votes -->
+<div>
+    <label for="grades">Inserisci i voti (18-33) separati da virgola:</label><br>
+    <input type="text" id="grades" placeholder="Esempio: 28,30,25"><br>
+    <button onclick="computeStatistics()">Calcola Statistiche</button>
+</div>
+
+<!-- Section to insert results -->
+<div class="result" id="results"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

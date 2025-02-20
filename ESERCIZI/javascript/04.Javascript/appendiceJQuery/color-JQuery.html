@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+		<title></title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">	</script>
+</head>
+<body>
+		<button id="redBtn">ROSSO</button>
+		<button id="greenBtn">VERDE</button>
+		<button id="yellowBtn">GIALLO</button>
+
+		<script language="javascript">
+				$(document).ready(function() {
+						$("#redBtn").click(function(){
+								$('body').css('background-color', 'red');
+						});
+
+						$("#greenBtn").click(function(){
+								$('body').css('background-color', 'green');
+						});
+
+						$("#yellowBtn").click(function(){
+								$('body').css('background-color', 'yellow');
+						});
+				});
+		</script>
+
+</body>
+</html>

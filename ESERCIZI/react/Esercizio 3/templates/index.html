@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask React SPA</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-router-dom@5.2.0/umd/react-router-dom.min.js"></script>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<div id="root"></div>
+
+
+</body>
+
+<script type="text/javascript">
+
+    var BrowserRouter = ReactRouterDOM.BrowserRouter;
+    var Route = ReactRouterDOM.Route;
+    var Link = ReactRouterDOM.Link;
+    var Switch = ReactRouterDOM.Switch;
+
+    function Home() {
+        return React.createElement(
+            'div',
+            {className: 'content'},
+            React.createElement('h1', null, 'Welcome to the Homepage'),
+            React.createElement('p', null, 'This is the main page of the website.')
+        )
+
+    }
+
+    function Books(props) {
+        var _useState = React.useState(null),
+            booksData = _useState[0],
+            setBooksData = _useState[1];
+
+
+        function fetchBooks() {
+            fetch('/api/books')
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    setBooksData(data)
+                })
+                .catch(function (error) {
+                    console.error(error)
+                });
+        }
+
+        React.useEffect(function () {
+            fetchBooks();
+        }, []);
+
+
+        function submitForm(event) {
+            event.preventDefault();
+
+            var Title = document.getElementById('Title').value;
+            var Author = document.getElementById('Author').value;
+
+            fetch('/api/books', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({Title: Title, Author: Author})
+            })
+                .then(function (response) {
+                    return response.json().then(function (result) {
+                        if (response.ok) {
+                            alert('Book added successfully!');
+                            fetchBooks();
+                        } else {
+                            alert('Error: ' + result.error);
+                        }
+                    });
+                })
+                .catch(function (error) {
+                    alert('Error: ' + error.message);
+                });
+        }
+
+        return React.createElement(
+            'div',
+            {className: 'content'},
+            React.createElement('h1', null, 'Libri'),
+            React.createElement('h1', null, 'Aggiungi un libro'),
+            React.createElement(
+                'form',
+                {id: 'bookForm', onSubmit: submitForm},
+                React.createElement('label', {htmlFor: 'Title'}, 'Title:'),
+                React.createElement('input', {type: 'text', id: 'Title', name: 'Title', required: true}),
+                React.createElement('br'),
+                React.createElement('br'),
+                React.createElement('label', {htmlFor: 'Author'}, 'Author:'),
+                React.createElement('input', {type: 'text', id: 'Author', name: 'Author', required: true}),
+                React.createElement('br'),
+                React.createElement('br'),
+                React.createElement('button', {type: 'submit'}, 'Add Book')
+            ),
+            React.createElement(
+                'table',
+                {className: 'table table-striped'},
+                React.createElement(
+                    'thead',
+                    null,
+                    React.createElement(
+                        'tr',
+                        null,
+                        React.createElement('th', null, 'Titolo'),
+                        React.createElement('th', null, 'Autore'),
+                        React.createElement('th', null, 'Genere'),
+                        React.createElement('th', null, 'Altezza'),
+                        React.createElement('th', null, 'Editore'),
+                        React.createElement('th', null, 'Azioni')
+                    )
+                ),
+                React.createElement(
+                    'tbody',
+                    null,
+                    booksData
+                        ? booksData.map(function (book, index) {
+                            return React.createElement(
+                                'tr',
+                                {key: index},
+                                React.createElement('td', null, book.Title),
+                                React.createElement('td', null, book.Author),
+                                React.createElement('td', null, book.Genre),
+                                React.createElement('td', null, book.Height),
+                                React.createElement('td', null, book.Publisher)
+                            );
+                        })
+                        : React.createElement('tr', null, React.createElement('td', {colSpan: 5}, 'Nessun dato disponibile'))
+                )
+            )
+        );
+    }
+
+
+    function MemberComponent(props) {
+        return React.createElement(
+            'div',
+            {className: 'team-member'},
+            React.createElement('img', {
+                src: `static/${props.imageUrl}`,
+            }),
+            React.createElement('h2', null, props.name),
+            React.createElement('p', null, `Position: ${props.position}`),
+            React.createElement('p', null, `Email: ${props.email}`)
+        );
+    }
+
+
+    function Team() {
+        var _useState = React.useState(null),
+            teamData = _useState[0],
+            setTeamData = _useState[1];
+
+        React.useEffect(function () {
+            fetch('/api/team')
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    setTeamData(data);
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        }, []);
+
+        return React.createElement(
+            'div',
+            {className: 'content'},
+            React.createElement('h1', null, 'This is our team'),
+            teamData
+                ? teamData.map(function (member, index) {
+                    return React.createElement(MemberComponent, {
+                        key: index,
+                        name: member.name,
+                        position: member.position,
+                        email: member.email,
+                        imageUrl: member.image
+                    });
+                })
+                : React.createElement('p', null, 'Loading team data...')
+        );
+    }
+
+    function About() {
+        return React.createElement(
+            'div',
+            {className: 'content'},
+            React.createElement('h1', null, 'About Us'),
+            React.createElement('p', null, 'This is the about page.')
+        );
+    }
+
+
+    function App() {
+        return React.createElement(
+            BrowserRouter,
+            null,
+            React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    'nav',
+                    {className: 'navbar'},
+                    React.createElement(
+                        'ul',
+                        {className: 'nav-links'},
+                        React.createElement(
+                            'li',
+                            {className: 'active'},
+                            React.createElement(Link, {to: '/'}, 'Home')
+                        ),
+                        React.createElement(
+                            'li',
+                            {className: 'active'},
+                            React.createElement(Link, {to: '/about'}, 'About')
+                        ),
+                        React.createElement(
+                            'li',
+                            {className: 'active'},
+                            React.createElement(Link, {to: '/team'}, 'Team')
+                        ),
+                        React.createElement(
+                            'li',
+                            {className: 'active'},
+                            React.createElement(Link, {to: '/books'}, 'Books')
+                        )
+                    )
+                ),
+                React.createElement(
+                    Switch,
+                    null,
+                    React.createElement(Route, {exact: true, path: '/', component: Home}),
+                    React.createElement(Route, {path: '/about', component: About}),
+                    React.createElement(Route, {path: '/team', component: Team}),
+                    React.createElement(Route, {path: '/books', component: Books})
+                )
+            )
+        );
+    }
+
+    var root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(React.createElement(App, null))
+</script>
+
+
+</html>

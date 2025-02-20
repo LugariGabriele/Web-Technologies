@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask React SPA</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-router-dom@5.2.0/umd/react-router-dom.min.js"></script>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div id="root"></div>
+
+
+</body>
+
+<script type="text/javascript">
+
+        var BrowserRouter = ReactRouterDOM.BrowserRouter;
+        var Route = ReactRouterDOM.Route;
+        var Link = ReactRouterDOM.Link;
+        var Switch = ReactRouterDOM.Switch;
+
+        function Home() {
+            // var _useState = React.useState(null),
+            //     homeData = _useState[0],
+            //     setHomeData = _useState[1];
+
+            // React.useEffect(function () {
+            //     fetch('/api/')
+            //         .then(function (response) { return response.json(); })
+            //         .then(function (data) { setHomeData(data); })
+            //         .catch(function(error) {console.error(error)});
+            // }, []);
+
+            return React.createElement(
+                  'div',
+                  {className: 'content'},
+                  React.createElement('h1', null, 'Welcome to the Homepage'),
+                  React.createElement('p', null, 'This is the main page of the website.')
+              )
+
+        }
+
+        function About() {
+            return React.createElement(
+                'div',
+                {className: 'content'},
+                React.createElement('h1', null, 'About Us'),
+                React.createElement('p', null, 'This is the about page.')
+            );
+        }
+
+
+        function App() {
+            return React.createElement(
+                BrowserRouter,
+                null,
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'nav',
+                        { className: 'navbar' },
+                        React.createElement(
+                            'ul',
+                            { className: 'nav-links' },
+                            React.createElement(
+                                'li',
+                                { className: 'active' },
+                                React.createElement(Link, { to: '/' }, 'Home')
+                            ),
+                            React.createElement(
+                                'li',
+                                { className: 'active' },
+                                React.createElement(Link, { to: '/about' }, 'About')
+                            )
+                        )
+                    ),
+                    React.createElement(
+                        Switch,
+                        null,
+                        React.createElement(Route, { exact: true, path: '/', component: Home }),
+                        React.createElement(Route, { path: '/about', component: About })
+                    )
+                )
+            );
+        }
+
+        var root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(React.createElement(App, null))
+</script>
+
+
+
+</html>

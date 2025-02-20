@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask React SPA</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-router-dom@5.2.0/umd/react-router-dom.min.js"></script>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/javascript">
+
+    import React from "react";
+
+
+    /**
+     * da fare sempre, servono per navigare le route senza fare tutti gli .html
+     */
+    var BrowserRouter = ReactRouterDOM.BrowserRouter;
+    var Route = ReactRouterDOM.Route;
+    var Link = ReactRouterDOM.Link;
+    var Switch = ReactRouterDOM.Switch;
+
+    function Home() {
+
+        return React.createElement(
+            'div',
+            null,
+            React.createElement('h1', null, 'Welcome to the Homepage'),
+            React.createElement('p', null, 'This is the main page of the website.')
+        )
+
+    }
+
+    function About() {
+        // Insert a h1 title 'About us' and a paragraph stating 'This is about page'
+        return React.createElement(
+            'div',
+            null,
+            React.createElement('h1', null, 'About Us'),
+            React.createElement('p', null, 'This is the main page of the website.')
+        )
+    }
+
+    function Contact() {
+        // Insert a h1 title 'Contact Us' and a div with two paragraphs containing:
+        // Email: Email: contact@example.com
+        // Phone: +1 (555) 123-4567
+
+        return React.createElement(
+            'div', null,
+            React.createElement('h1', null, 'Contact Us'),
+            React.createElement(
+                'div', null,
+                React.createElement('p', null, 'Email:contact@example.com'),
+                React.createElement('p', null, 'Phone: +1 (555) 123-4567')
+            ),
+        )
+    }
+
+    /**
+     * crea il routing
+     *
+     */
+    function App() {
+        return React.createElement(
+            BrowserRouter,
+            null,
+            React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    'nav',
+                    null,
+                    React.createElement(
+                        'ul',
+                        {className: 'nav-horizontal'},
+                        React.createElement(
+                            'li',
+                            null,
+                            React.createElement(Link, {to: '/'}, 'Home')
+                        ),
+                        // Insert missing links
+                        React.createElement(
+                            'li',
+                            null,
+                            React.createElement(Link, {to: '/about'}, 'About')
+                        ),
+                        React.createElement(
+                            'li',
+                            null,
+                            React.createElement(Link, {to: '/contact'}, 'Contact')
+                        )
+                    )
+                ),
+                React.createElement(
+                    Switch,
+                    null,
+                    React.createElement(Route, {exact: true, path: '/', component: Home}),
+
+                    // Insert missing routes
+                    React.createElement(Route, {path: '/about', component: About}),
+                    React.createElement(Route, {path: '/contact', component: Contact})
+                )
+            )
+        );
+    }
+
+    /**
+     * serve sempre, crea le route dinamicamente
+     */
+    var root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(React.createElement(App, null))
+</script>
+
+
+</body>
+</html>

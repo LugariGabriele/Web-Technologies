@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+      class ImageComponent extends React.Component {
+          render() {
+              return (
+                  <div style={{ margin: '10px', textAlign: 'center' }}>
+                      <img
+                          src={this.props.src}
+                          alt={this.props.title}
+                          style={{ maxWidth: '150px', border: '1px solid #ccc', padding: '5px' }}
+                      />
+                      <p style={{ fontSize: '14px', color: '#555' }}>
+                          {this.props.title}
+                      </p>
+                  </div>
+              );
+          }
+      }
+
+      class Gallery extends React.Component {
+
+          constructor(props) {
+              super(props);
+              this.state = {
+                images: this.props.images,
+              };
+              this.addImage = this.addImage.bind(this);
+          }
+
+          addImage() {
+              var src = prompt("Please enter image url");
+              var title = prompt("Please enter image title");
+
+              var newImage = {
+                  src: src,
+                  title: title
+              };
+
+              // Update the state adding a new class
+              this.setState({
+                  images: [...this.state.images, newImage]
+              });
+          }
+
+          render() {
+              return (
+                  <div>
+                      <div style={{
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          justifyContent: 'center',
+                          gap: '20px'
+                      }}>
+                        {this.state.images.map(function(image, index){
+                            return <ImageComponent
+                                key={index}
+                                src={image.src}
+                                title={image.title}/>
+                        })}
+                      </div>
+                      <button
+                        onClick={this.addImage}
+                        style={{
+                          margin: '20px auto',
+                          display: 'block',
+                          padding: '10px 20px',
+                          fontSize: '16px',
+                          cursor: 'pointer',
+                        }}>
+                          Aggiungi Immagine
+                      </button>
+                    </div>
+              );
+          }
+      }
+
+      const imageData = [
+          { src: 'https://www.armandoalpantheon.it/wp-content/uploads/2023/03/Primavera-a-Roma-%E2%80%93-Il-Colosseo-e-gli-scavi-di-Ostia-Antica-armando-al-pantheon-768x480.jpg', title: 'Colosseo' },
+          { src: 'https://png.pngtree.com/background/20230525/original/pngtree-floral-wallpaper-with-brown-and-brown-paint-picture-image_2735082.jpg', title: 'Linguaggio dei fiori' },
+          { src: 'https://www.donne.it/wp-content/uploads/2023/10/intelligenza-artificiale-768x512.jpg', title: 'Intelligenza Artificiale' }
+      ];
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<Gallery images={imageData} />);
+
+    </script>
+
+  </body>
+</html>

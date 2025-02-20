@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO List</title>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">	</script> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #todo-form {
+            margin-bottom: 20px;
+        }
+        #todo-input {
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+            margin-right: 10px;
+        }
+        #todo-button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        #todo-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .todo-item {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .delete-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>TODO List</h1>
+
+    <div id="todo-form">
+        <input type="text" id="todo-input" placeholder="Add a new task..." />
+        <button id="todo-button">Add</button>
+    </div>
+
+    <ul id="todo-list"></ul>
+
+    <script src="todo.js"></script>
+    <!-- <script src="todo_query.js"></script> -->
+    <script src="todo_ES6.js"></script>
+</body>
+</html>

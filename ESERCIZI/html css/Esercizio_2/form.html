@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <title>Form di Registrazione</title>
+  <style>
+    @import url(style.css);
+  </style>
+</head>
+<body>
+  <div class="registration-container">
+    <h2>Registrazione Utente</h2>
+    <form action="https://httpbin.org/post" method="post">
+      <!--Username-->
+      <label for="username">Nome Utente:</label>
+      <input type="text" class="Username" name="Username" placeholder="Inserisci il nome utente" required>
+      
+      <!--Password-->
+      <label for="Password">Password:</label>
+      <input type="password" class="Password" name="Password" placeholder="Inserisci la Password" required>
+
+
+      <!--email-->
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" placeholder="Inserisci la email" required>
+
+    <!--Genere-->
+    <label for="Genere">Genere</label>
+    <div class="Genere-group">
+      <label><input type="radio" name="gender" value="male" required> Maschio</label>
+      <label><input type="radio" name="gender" value="female" required> Femmina</label>
+      <label><input type="radio" name="gender" value="other" required> Altro</label>
+    </div>
+
+    <!--Ineressi-->
+    <label for="Interessi">Interessi:</label>
+    <div class="Interessi-group">
+      <label><input type="checkbox" name="interests" value="sport"> Sport</label>
+      <label><input type="checkbox" name="interests" value="music"> Musica</label>
+      <label><input type="checkbox" name="interests" value="technology"> Tecnologia</label>
+      <label><input type="checkbox" name="interests" value="travel"> Viaggi</label>
+      <label><input type="checkbox" name="interests" value="culture"> Cultura</label>
+    </div>   
+
+    <!-- Country (Select Dropdown) -->
+    <label for="country">Paese:</label>
+    <select id="country" name="country" required>
+      <option value="">Seleziona il tuo paese</option>
+      <option value="italy">Italia</option>
+      <option value="usa">Stati Uniti</option>
+      <option value="france">Francia</option>
+      <option value="germany">Germania</option>
+      <option value="belgium">Belgio</option>
+      <option value="other">Altro</option>
+    </select>
+
+    <!-- Submit Button -->
+    <button type="submit">Registrati</button>
+
+    </form>
+  </div>
+</body>
+</html>

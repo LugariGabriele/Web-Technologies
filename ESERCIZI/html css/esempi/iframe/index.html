@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Galleria Video con iframe e Tabelle</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h1>Galleria Video</h1>
+
+    <!-- Table of videos -->
+    <table>
+        <thead>
+            <tr>
+                <th>Titolo del Video</th>
+                <th>Guarda</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Video 1: Introduzione a HTML</td>
+                <td><a href="https://www.youtube.com/embed/dD2EISBDjWM" target="videoFrame">Guarda</a></td>
+            </tr>
+            <tr>
+                <td>Video 2: Introduzione a CSS</td>
+                <td><a href="https://www.youtube.com/embed/yfoY53QXEnI" target="videoFrame">Guarda</a></td>
+            </tr>
+            <tr>
+                <td>Video 3: Introduzione a JavaScript</td>
+                <td><a href="https://www.youtube.com/embed/PkZNo7MFNFg" target="videoFrame">Guarda</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- iFrame to show videos -->
+    <iframe name="videoFrame" width="560" height="315" src="https://www.youtube.com/embed/dD2EISBDjWM" frameborder="0" allowfullscreen></iframe>
+
+</body>
+</html>

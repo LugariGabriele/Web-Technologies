@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<title>Validazione di form sul browser</title>
+		<link rel="stylesheet" href="default.css" type="text/css"/>
+		<script src="script.js....."></script>
+</head>
+<body>
+		<h1>Iscrizione (fittizia) a una mailing list</h1>
+		<p>Fornire le seguenti informazioni:</p>
+		<form name="mailinglistform" action="subscription.html" method="post"
+		onsubmit="return(validEmail(document.mailinglistform.email)&& nonBlank(document.mailinglistform.nickname));">
+			<table>
+				<tr>
+						<td>Nick name:<br/>(min. 1 carattere)</td>
+						<td><input type="text" name="nickname"/></td>
+				</tr>
+				<tr>
+						<td>Indirizzo email:</td>
+						<td><input type="text" name="email" value=""/></td>
+				</tr>
+				<tr>
+						<td colspan="2"><input type="submit" name="proceed" value="Invia"/></td>
+				</tr>
+			</table>
+		</form>
+</body>
+</html>
