@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Nuovo Post{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Scrivi Nuovo Post</h1>
+
+    {# Mostra messaggi flash #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form id="new-post-form" method="POST" action="/new_post" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="title" class="form-label">Titolo</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+            <div class="invalid-feedback">
+                Inserisci un titolo
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="author" class="form-label">Autore</label>
+            <input type="text" class="form-control" id="author" name="author" required>
+            <div class="invalid-feedback">
+                Inserisci l'autore
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">Categoria</label>
+            <select class="form-select" id="category" name="category" required>
+
+              {% for category in post_categories %}
+                <option value="{{category.name}}">{{category.name}}</option>
+              {% endfor %}
+                <option value="Altro">Altro</option>
+            </select>
+            <div class="invalid-feedback">
+                Seleziona una categoria
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="content" class="form-label">Contenuto</label>
+            <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+            <div class="invalid-feedback">
+                Inserisci il contenuto del post
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Pubblica Post</button>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Validazione form lato client
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var form = document.getElementById('new-post-form');
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            });
+        });
+    })();
+</script>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+<!--esercizio 2 -->
+{% block title %}Eventi Disponibili {% endblock %}
+
+{% block content %}
+    <h2>Eventi Disponibili</h2>
+    {% if events %}
+        <table>
+            <thead>
+            <tr>
+                <th>Codice</th>
+                <th>Nome</th>
+                <th>Sport</th>
+                <th>Data</th>
+                <th>Luogo</th>
+                <th>Posti Disponibili</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+                <tr>
+                    <td><a href="/event/{{ event.code }}">{{ event.code }} </a></td>
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.sport }}</td>
+                    <td>{{ event.date }}</td>
+                    <td>{{ event.place }}</td>
+                    <td>{{ event.available_places}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nessun evento disponibile</p>
+
+    {% endif %}
+{% endblock %}

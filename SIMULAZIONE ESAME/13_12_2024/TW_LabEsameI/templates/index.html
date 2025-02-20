@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block titolo %}Elenco Prodotti{% endblock %}
+
+{% block content %}
+    <h1 class="text-center mb-4">Inventario Magazzino</h1>
+
+    <!-- esercizio 2 -->
+    {% if prodotti %}
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                {% for colonna in intestazioni %}
+                    <th>{{ colonna }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for prodotto in prodotti %}
+                <tr>
+                    <td><a href="/prodotto/{{ prodotto.codice }}">{{ prodotto.codice }}</a></td>
+                    <td>{{ prodotto.nome }}</td>
+                    <td>{{ prodotto.quantita }}</td>
+                    <td>{{ prodotto.prezzo }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning text-center">
+            Nessun prodotto trovato nel magazzino.
+        </div>
+    {% endif %}
+{% endblock %}

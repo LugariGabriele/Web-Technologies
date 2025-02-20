@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block titolo %}Elenco Prodotti{% endblock %}
+
+{% block content %}
+    <h1 class="text-center mb-4">Prodotto {{ prodotto.codice }}</h1>
+    <!-- esercizio 3 -->
+    {% if prodotto %}
+        <div class="card" style="width: 18rem; margin: 0 auto;">
+            <div class="card-body">
+                <h5 class="card-title prodotto-title">{{ prodotto.nome }}</h5>
+                <p class="card-text prodotto-text" id="{{ prodotto.codice }}">
+                    <strong>Codice:</strong> {{ prodotto.codice }}</p>
+                <p class="card-text prodotto-text"><strong>Quantità:</strong> {{ prodotto.quantita }}</p>
+                <p class="card-text prodotto-text"><strong>Prezzo:</strong> €{{ prodotto.prezzo }}</p>
+                <button class="btn btn-danger mt-3" id="delete-button">Elimina</button>
+            </div>
+        </div>
+        <!--esercizio 4 -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const deleteButton = document.getElementById('delete-button');
+                prodotto_codice = document.getElementById('{{ prodotto.codice }}').textContent.split(':')[1].trim();
+                console.log(prodotto_codice);
+                deleteButton.addEventListener('click', function () {
+                    fetch(`api/elimina/${prodotto_codice}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                alert('Prodotto eliminato con successo.');
+                                window.location.href = '/';
+                            } else {
+                                alert('Errore durante l\'eliminazione del prodotto.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Errore:', error);
+                            alert('Errore durante l\'eliminazione del prodotto.');
+                        });
+
+                })
+
+
+            })
+        </script>
+    {% else %}
+        <div class="alert alert-warning text-center">
+            Prodotto non trovato nel magazzino.
+        </div>
+    {% endif %}
+{% endblock %}

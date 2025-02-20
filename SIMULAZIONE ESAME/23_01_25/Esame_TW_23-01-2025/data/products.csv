@@ -1,0 +1,11 @@
+codice_prodotto,nome_prodotto,categoria,prezzo,disponibilita,descrizione
+P001,Smartphone XYZ,Elettronica,699,19,Smartphone di ultima generazione con fotocamera avanzata e display AMOLED.
+P002,Notebook Ultra X,Elettronica,1299,15,"Notebook leggero e performante, ideale per lavoro e gaming."
+P003,Bicicletta da Corsa Pro Sport,Sport,799,8,"Bicicletta da corsa professionale, leggera e aerodinamica."
+P004,Scarpe Running FastTrack,Sport,120,50,"Scarpe da corsa comode e performanti, ideali per allenamenti e competizioni."
+P005,Lavatrice EcoWash 3000,Elettrodomestici,499,8,Lavatrice a risparmio energetico con programmi avanzati di lavaggio.
+P006,Frigorifero CoolFresh 500,Elettrodomestici,899,5,Frigorifero doppia porta con tecnologia no frost e capacità extra.
+P007,"Libro ""Python per Tutti""",Libri,35,30,"Guida completa per imparare Python, adatta a principianti ed esperti."
+P008,Cuffie Wireless BoomSound,Elettronica,150,25,Cuffie wireless con cancellazione attiva del rumore e qualità audio premium.
+P009,Sedia Ergonomica ComfortPlus,Arredamento,250,12,"Sedia ergonomica regolabile, ideale per ufficio e studio."
+P010,Orologio Sportivo FitLife,Sport,199,40,"Orologio fitness con monitoraggio della salute e GPS integrato."""

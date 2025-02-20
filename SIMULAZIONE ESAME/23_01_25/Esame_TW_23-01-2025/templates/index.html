@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+<!--esercizio 2 -->
+{% block title %}Prodotti Disponibili {% endblock %}
+
+{% block content %}
+    <h2>Prodotti Disponibili</h2>
+    {% if products %}
+        <table>
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Prezzo</th>
+                <th>Disponibilità</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in products %}
+                <tr>
+                    <td><a href="/product/{{ product.codice_prodotto }}">{{ product.nome_prodotto }}</a></td>
+                    <td>{{ product.prezzo }}</td>
+                    <td>{% if product.disponibilita == 0 %}
+                        <span style="color: red;">Esaurito</span>
+                    {% else %}
+                        {{ product.disponibilita }}
+                    {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nessun prodotto disponibile</p>
+
+    {% endif %}
+{% endblock %}

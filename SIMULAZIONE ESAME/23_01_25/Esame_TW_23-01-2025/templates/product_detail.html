@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Dettaglio Prodotto{% endblock %}
+{% block content %}
+    <h2>Dettaglio Prodotto</h2>
+    <div class="product-detail">
+    <ul class="product-info">
+        <li><strong>Nome:</strong> {{ product['nome prodotto'] }}</li>
+        <li><strong>Categoria:</strong> {{ product['categoria'] }}</li>
+        <li><strong>Prezzo:</strong> €{{ product['prezzo'] }}</li>
+        <li>
+            <strong>Disponibilità:</strong>
+            {% if product['disponibilita']|int > 0 %}
+                <span class="available">Disponibile</span>
+            {% else %}
+                <span class="out-of-stock">Esaurito</span>
+            {% endif %}
+        </li>
+        <li><strong>Descrizione:</strong> {{ product['descrizione'] }}</li>
+    </ul>
+    <div>
+    <div class="actions">
+        <a class="button-link" href="/index">Torna alla lista prodotti</a>
+        <!-- ESERCIZIO 4 ACQUISTO PRODOTTO-->
+        {% if product['disponibilita']|int > 0 %}
+            <form action="/api/buy/{{ product['codice_prodotto'] }}" method="post">
+                <button type="submit">Acquista</button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

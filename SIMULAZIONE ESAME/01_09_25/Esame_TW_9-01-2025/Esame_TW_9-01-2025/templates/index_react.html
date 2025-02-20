@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask React SPA</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-router-dom@5.2.0/umd/react-router-dom.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div id="root"></div>
+</body>
+
+<script type="text/javascript">
+    var BrowserRouter = ReactRouterDOM.BrowserRouter;
+    var Route = ReactRouterDOM.Route;
+    var Link = ReactRouterDOM.Link;
+    var Switch = ReactRouterDOM.Switch;
+
+    <!--ESERCIZIO 7 CREARE EVENT LIST -->
+   function EventList() {
+        const [events, setEvents] = React.useState([]);
+
+        React.useEffect(() => { //prendo gli eventi dal server
+            fetch('/api/events')
+                .then(response => response.json())
+                .then(data => setEvents(data))
+                .catch(error => console.error("Errore nel recuperare gli eventi:", error));
+        }, []);
+
+        const handleBooking = (eventCode) => {
+            const confirmed = window.confirm("Sei sicuro di voler prenotare un posto?");
+            if (confirmed) {
+                fetch(`/api/book/${eventCode}`, { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        setEvents(events.map(event =>
+                            event.code === eventCode ? { ...event, available_places: event.available_places - 1 } : event
+                        ));
+                    })
+                    .catch(error => alert("Errore nella prenotazione: " + error));
+            }
+        };
+
+        return React.createElement(
+            'div',
+            { className: "container mt-4" },
+            React.createElement('h1', { className: "text-center mb-4" }, 'Eventi Disponibili'),
+            events.length > 0 ? React.createElement(
+                'table',
+                { className: "event-table" },
+                React.createElement('thead', null,
+                    React.createElement('tr', null,
+                        React.createElement('th', null, 'Nome'),
+                        React.createElement('th', null, 'Sport'),
+                        React.createElement('th', null, 'Data'),
+                        React.createElement('th', null, 'Luogo'),
+                        React.createElement('th', null, 'Posti Disponibili'),
+                        React.createElement('th', null, '')
+                    )
+                ),
+                React.createElement('tbody', null,
+                    events.map((event) => React.createElement('tr', { key: event.code },
+                        React.createElement('td', null, React.createElement(Link, { to: `/react/event/${event.code}` }, event.name)),
+                        React.createElement('td', null, event.sport),
+                        React.createElement('td', null, event.date),
+                        React.createElement('td', null, event.place),
+                        React.createElement('td', null, event.available_places),
+                        React.createElement('td', null,
+                            React.createElement('button', {
+                                className: "book-button",
+                                onClick: () => handleBooking(event.code)
+                            }, "Prenota")
+                        )
+                    ))
+                )
+            ) : React.createElement('p', null, 'Nessun evento disponibile.')
+        );
+    }
+
+    <!--ESERCIZIO 8 Event Detail -->
+    function EventDetail({ match }) {
+        const [event, setEvent] = React.useState(null);
+
+        React.useEffect(() => {
+
+            fetch(`/api/event/${match.params.eventcode}`)
+                .then(response => response.json())
+                .then(data => setEvent(data))
+                .catch(error => console.error("Errore nel recuperare l'evento:", error));
+        }, [match.params.eventcode]);
+
+        if (!event) {
+            return React.createElement('div', null, 'Caricamento...');
+        }
+
+        return React.createElement('div', {className: "event-card"},
+            React.createElement('h1', null, event.name),
+            React.createElement('ul', null,
+                React.createElement('li', null, React.createElement('strong', null, 'Sport:'), event.sport),
+                React.createElement('li', null, React.createElement('strong', null, 'Data:'), event.date),
+                React.createElement('li', null, React.createElement('strong', null, 'Luogo:'), event.place),
+                React.createElement('li', null, React.createElement('strong', null, 'Posti Disponibili:'), event.available_places)
+            ),
+        );
+
+
+    }
+
+    function App() {
+        return React.createElement(
+            BrowserRouter,
+            null,
+            React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    Switch,
+                    null,
+                    React.createElement(Route, {path: '/react', exact: true, component: EventList}),
+                    React.createElement(Route, {path: '/react/event/:eventcode', component: EventDetail})
+                )
+            )
+        );
+    }
+
+    var root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(React.createElement(App, null));
+</script>
+
+</html>

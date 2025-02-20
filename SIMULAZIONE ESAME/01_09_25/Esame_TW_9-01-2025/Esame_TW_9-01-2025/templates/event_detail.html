@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+<!--esercizio 3 -->
+
+{% block title %}EVENTO {{ event.code }} {% endblock %}
+
+{% block content %}
+    <div class="event-card">
+        <h1>{{ event.name }}</h1>
+        <ul>
+            <li><strong>Sport:</strong> {{ event.sport }}</li>
+            <li><strong>Data:</strong> {{ event.date }}</li>
+            <li><strong>Luogo:</strong> {{ event.place }}</li>
+            <li><strong>Posti Disponibili:</strong> {{ event.available_places }}</li>
+        </ul>
+        <!-- ESERCIZIO 4 PRENOTARE POSTO-->
+        <form action="/api/book/{{ event['code'] }}" method="post">
+            <button type="submit">Prenota Posto</button>
+        </form>
+    </div>
+{% endblock %}

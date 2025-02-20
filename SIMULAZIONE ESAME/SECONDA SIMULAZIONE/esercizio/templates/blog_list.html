@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - Articoli{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Blog Posts</h1>
+
+    {% if posts %}
+        <div class="row row-cols-1 row-cols-md-8 g-4">
+            {% for post in posts %}
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            <a href="{{ url_for('get_post', post_id=post.id) }}" class="text-decoration-none">
+                                {{ post.title }}
+                            </a>
+                        </h2>
+                        <div class="card-subtitle mb-2 text-muted d-flex justify-content-between">
+                            <span>Autore: {{ post.author }}</span>
+                            <span>Data: {{ post.date }}</span>
+                            <span>Categoria: {{ post.category }}</span>
+                        </div>
+                        <p class="card-text">{{ post.content[:200] }}...</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            Nessun post trovato
+        </div>
+    {% endif %}
+{% endblock %}

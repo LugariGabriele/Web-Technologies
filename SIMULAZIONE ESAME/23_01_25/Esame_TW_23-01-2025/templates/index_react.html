@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask React SPA</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-router-dom@5.2.0/umd/react-router-dom.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div id="root"></div>
+</body>
+
+<script type="text/javascript">
+    var BrowserRouter = ReactRouterDOM.BrowserRouter;
+    var Route = ReactRouterDOM.Route;
+    var Link = ReactRouterDOM.Link;
+    var Switch = ReactRouterDOM.Switch;
+
+    /*
+ESERCIZIO 7 CREARE  un componente react ProductList che visualizza la lista dei prodotti disponibili come in es3 senza requiito della cliccabilità
+del nome del prodotto
+*/
+
+    function ProductList() {
+        const [products, setProducts] = React.useState([]);
+
+        /*
+        ESERCIZIO 8 nella componente ProductList aggiungere un form con un campo input e un pulsante per filtrare i prodotti con
+        le seguenti specifiche: se il campo contiene una stringa,la componente deve renderizzare solo i prodotti il cui nome contiene
+        quella stringa; se il campo è vuoto, la componente deve renderizzare tutti i prodotti presenti
+         */
+
+
+        // Funzione per caricare i prodotti (chiamata API con filtro opzionale)
+        function fetchFilteredProducts(name = '') {
+            fetch('/api/products/filter', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name})
+            })
+                .then(response => response.json())
+                .then(data => setProducts(data))
+                .catch(error => console.error("Errore nel recuperare i prodotti:", error));
+        }
+
+        // Caricamento iniziale dei prodotti
+        React.useEffect(() => {
+            fetchFilteredProducts(); // Nessun filtro al caricamento iniziale
+        }, []);
+
+        // Gestione della sottomissione del form
+        function handleSubmit(event) {
+            event.preventDefault(); // Previene il refresh della pagina
+            const formData = new FormData(event.target);
+            const name = formData.get('filterName');
+            fetchFilteredProducts(name);
+        }
+
+        return React.createElement(
+            'div',
+            {className: "container mt-4"},
+            React.createElement('h1', {className: "text-center mb-4"}, 'Prodotti Disponibili'),
+            React.createElement(
+                'form',
+                {
+                    onSubmit: handleSubmit,
+                    style: {marginBottom: '1rem', display: 'flex', gap: '0.5rem'}
+                },
+                React.createElement('input', {
+                    type: 'text',
+                    name: 'filterName',
+                    placeholder: 'Cerca per nome...',
+                    style: {
+                        flex: '1',
+                        padding: '0.5rem',
+                        border: '1px solid #ddd',
+                        borderRadius: '4px'
+                    }
+
+                }),
+                React.createElement('button', {
+                    type: 'submit',
+                    style: {
+                        padding: '0.5rem 1rem',
+                        backgroundColor: '#007bff',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                    }
+                }, 'Filtra')
+            ),
+            products.length > 0 ? React.createElement(
+                'table',
+                {style: {width: '100%', borderCollapse: 'collapse', margin: '1rem 0'}},
+                React.createElement(
+                    'thead',
+                    null,
+                    React.createElement(
+                        'tr',
+                        null,
+                        React.createElement('th', null, 'Nome'),
+                        React.createElement('th', null, 'Prezzo (€)'),
+                        React.createElement('th', null, 'Disponibilità')
+                    )
+                ),
+                React.createElement(
+                    'tbody',
+                    null,
+                    products.map(product =>
+                        React.createElement(
+                            'tr',
+                            {key: product['codice_prodotto'], style: {borderBottom: '1px solid #ddd'}},
+                            React.createElement('td', null, product['nome_prodotto']),
+                            React.createElement('td', null, product['prezzo']),
+                            React.createElement('td', null,
+                                parseInt(product['disponibilita']) > 0 ? 'Disponibile' : 'Esaurito'
+                            )
+                        )
+                    )
+                )
+            ) : React.createElement('p', null, 'Nessun prodotto trovato.')
+        );
+    }
+
+
+    function App() {
+        return React.createElement(
+            BrowserRouter,
+            null,
+            React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    Switch,
+                    null,
+                    React.createElement(Route, {path: '/react', exact: true, component: ProductList})
+                )
+            )
+        );
+    }
+
+
+    var root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(React.createElement(App, null));
+</script>
+
+</html>

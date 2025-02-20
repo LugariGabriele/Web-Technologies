@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask React SPA</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-router-dom@5.2.0/umd/react-router-dom.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="d-flex flex-column h-100">
+
+<div id="root"></div>
+
+<footer class="bg-dark text-white text-center py-3 mt-auto">
+    <p class="mb-0">&copy; 2024 Blog Application</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+<script type="text/javascript">
+
+    var BrowserRouter = ReactRouterDOM.BrowserRouter;
+    var Route = ReactRouterDOM.Route;
+    var Link = ReactRouterDOM.Link;
+    var Switch = ReactRouterDOM.Switch;
+
+
+    function BlogList() {
+        const [blogData, setBlogData] = React.useState(null)
+
+        function loadPosts() {
+            fetch('/api/posts')
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    setBlogData(data);
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        }
+
+
+        React.useEffect(function () {
+            loadPosts()
+        }, []);
+
+        return React.createElement(
+            'div',
+            null,
+            React.createElement('h1', {className: "mb-4"}, 'Blog Posts'),
+            blogData ? React.createElement('div', {className: "table table-striped table-hover"},
+                blogData.map((post, index) => {
+                        return React.createElement('div', {key: index, className: "col"},
+                            React.createElement('div', {className: "card h-100"},
+                                React.createElement('div', {className: "card-body"},
+                                    React.createElement('h2', {className: "card-title"},
+                                        React.createElement(Link, {
+                                                to: `/react/post/${post.id}`,
+                                                className: "text-decoration-none"
+                                            },
+                                            post.title
+                                        )
+                                    )
+                                ),
+                                React.createElement('div', {className: "card-subtitle mb-2 text-muted d-flex justify-content-between"},
+                                    React.createElement('span', null, `Autore: ${post.author}`),
+                                    React.createElement('span', null, `Data: ${post.date}`),
+                                    React.createElement('span', null, `Categoria: ${post.category}`)
+                                )
+                            )
+                        )
+                    }
+                )
+            ) : React.createElement('p', {className: "alert alert-info", role: "alert"}, 'Nessun post trovato')
+        );
+    }
+
+    function PostComponent({match}) {
+        const postId = match.params.id;
+        const [postData, setPostData] = React.useState(null);
+
+        function fetchPost() {
+            fetch(`../../api/post/${postId}`)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    setPostData(data)
+                })
+                .catch(function (error) {
+                    console.error(error)
+                });
+        }
+
+
+        React.useEffect(function () {
+            fetchPost();
+        }, [postId]);
+
+        const handleSubmit = (event) => {
+            event.preventDefault();
+
+            const newComment = {
+                post_id: postId,
+                author: document.getElementById('authorName').value,
+                email: document.getElementById('email').value,
+                text: document.getElementById('comment').value
+            };
+
+            fetch(`/api/comments/${postId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newComment)
+            })
+                .then((response) => {
+                    return response.json().then(function (result) {
+                        if (response.ok) {
+                            alert('Post added successfully!');
+                            fetchPost();
+                        } else {
+                            alert('Error: ' + result.error);
+                        }
+                    });
+                })
+                .catch((error) => {
+                    alert('Error: ' + error.message);
+                });
+
+        };
+
+        return React.createElement("div", null,
+            postData ? React.createElement(
+                'div',
+                {className: 'container my-5'},
+                // Article Header
+                React.createElement(
+                    'div',
+                    {className: 'row mb-4'},
+                    React.createElement(
+                        'div',
+                        {className: 'col'},
+                        React.createElement('h1', {className: 'display-5'}, 'Titolo dell\'articolo'),
+                        React.createElement(
+                            'p',
+                            {className: 'text-muted'},
+                            'Scritto da ',
+                            React.createElement('strong', null, postData.author),
+                            ' | Categoria: ',
+                            React.createElement('span', {className: 'badge bg-primary'}, postData.category)
+                        ),
+                    )
+                ),
+                // Article Content
+                React.createElement(
+                    'div',
+                    {className: 'row mb-5'},
+                    React.createElement(
+                        'div',
+                        {className: 'col'},
+                        React.createElement(
+                            'p',
+                            {className: 'lead'},
+                            postData.content
+                        )
+                    )
+                ),
+
+                // Comments Section
+                React.createElement(
+                    'div',
+                    {className: 'row mb-5'},
+                    React.createElement(
+                        'div',
+                        {className: 'col'},
+                        React.createElement('h2', null, 'Commenti'),
+                        React.createElement(
+                            'div',
+                            {className: 'list-group'},
+                            // Comment 1
+                            postData.comments.map((comment, index) => {
+                                return React.createElement(
+                                    'div',
+                                    {className: 'list-group-item'},
+                                    React.createElement('h5', {className: 'mb-1'}, comment.author),
+                                    React.createElement('small', {className: 'text-muted'}, comment.date),
+                                    React.createElement('p', {className: 'mb-1'}, comment.text)
+                                )
+                            })
+                        )
+                    )
+                ),
+                // Comment Form
+                React.createElement(
+                    'div',
+                    {className: 'row'},
+                    React.createElement(
+                        'div',
+                        {className: 'col'},
+                        React.createElement('h3', null, 'Aggiungi un Commento'),
+                        React.createElement(
+                            'form',
+                            {onSubmit: handleSubmit},
+                            React.createElement(
+                                'div',
+                                {className: 'mb-3'},
+                                React.createElement('label', {htmlFor: 'authorName', className: 'form-label'}, 'Nome'),
+                                React.createElement('input', {
+                                    type: 'text',
+                                    className: 'form-control',
+                                    id: 'authorName',
+                                    placeholder: 'Il tuo nome',
+                                    required: true,
+                                })
+                            ),
+                            React.createElement(
+                                'div',
+                                {className: 'mb-3'},
+                                React.createElement('label', {htmlFor: 'email', className: 'form-label'}, 'Email'),
+                                React.createElement('input', {
+                                    type: 'email',
+                                    className: 'form-control',
+                                    id: 'email',
+                                    placeholder: 'Il tuo indirizzo email'
+                                })
+                            ),
+                            React.createElement(
+                                'div',
+                                {className: 'mb-3'},
+                                React.createElement('label', {htmlFor: 'comment', className: 'form-label'}, 'Commento'),
+                                React.createElement('textarea', {
+                                    className: 'form-control',
+                                    id: 'comment',
+                                    rows: '4',
+                                    placeholder: 'Scrivi qui il tuo commento',
+                                    required: true,
+                                })
+                            ),
+                            React.createElement(
+                                'button',
+                                {type: 'submit', className: 'btn btn-primary'},
+                                'Invia Commento'
+                            )
+                        )
+                    )
+                )
+            ) : React.createElement("p", null, "Recupero dati post...")
+        );
+    }
+
+
+    function Home() {
+
+        return React.createElement("div",
+            {className: "home-page text-center"},
+            React.createElement("h1", {className: "mb-4"}, "Benvenuti nel nostro Blog"),
+            React.createElement("section",
+                {className: "intro"},
+                React.createElement("p",
+                    {className: "lead"},
+                    "Questo blog è un punto di incontro per appassionati di tecnologia, viaggi e storie di vita. Qui troverai articoli coinvolgenti, approfondimenti interessanti e prospettive uniche."
+                )
+            )
+        );
+    }
+
+    function App() {
+        return React.createElement(
+            BrowserRouter,
+            null,
+            React.createElement("header", null,
+                React.createElement(
+                    'header',
+                    null,
+                    React.createElement(
+                        'nav',
+                        {className: 'navbar navbar-expand-lg navbar-dark bg-dark'},
+                        React.createElement(
+                            'div',
+                            {className: 'container'},
+                            React.createElement(Link, {to: '/react', className: 'navbar-brand'}, 'Blog App'),
+                            React.createElement("button", {
+                                className: "navbar-toggler",
+                                type: "button",
+                                data_bs_toggle: "collapse",
+                                data_bs_target: "#navbarNav"
+                            }, React.createElement("span", {className: 'navbar-toggler-icon'}, ''))
+                        ),
+                        React.createElement(
+                            'div',
+                            {className: 'collapse navbar-collapse', id: "navbarNav"},
+                            React.createElement(
+                                'ul',
+                                {className: 'navbar-nav ms-auto'},
+                                React.createElement(
+                                    'li',
+                                    {className: 'nav-item'},
+                                    React.createElement(Link, {to: '/react', className: 'nav-link'}, 'Home')
+                                ),
+                                React.createElement(Link, {to: '/react/posts', className: 'nav-link'}, 'Blog Posts')
+                            )
+                        )
+                    ),
+                )
+            ),
+            React.createElement(
+                Switch,
+                {className: "container mt-4 flex-shrink-0"},
+                React.createElement(Route, {exact: true, path: '/react', component: Home}),
+                React.createElement(Route, {exact: true, path: '/react/posts', component: BlogList}),
+                React.createElement(Route, {path: '/react/post/:id', component: PostComponent})
+            )
+        );
+    }
+
+    var root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(React.createElement(App, null))
+
+</script>
+
+</html>
