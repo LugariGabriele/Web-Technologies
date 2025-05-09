@@ -7,7 +7,7 @@ collection of exercises carried out throughout the duration of the course, __sin
 * CSS
 * JavaScript
 * Flask
-* API
+* Rest API
 * React
 * Ajax
 * JSON
